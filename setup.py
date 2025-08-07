@@ -9,11 +9,13 @@ setup(
     description='document conversion tools',
     long_description='convert html to latex and docx',
     packages=[
-        'condox'
+        'condox',
+        'condox.trans',
+        'condox.trans.html2latex'
     ],
     zip_safe = False,
     install_requires = [
-        "fyg >= 0.1.4"
+        "fyg >= 0.1.7.2"
     ],
     entry_points = '''''',
     classifiers = [
