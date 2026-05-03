@@ -1,4 +1,4 @@
-from cantools.web import strip_html, strip_html_carefully
+from cantools.web.util import strip_html, strip_html_carefully
 from cantools.util.data import rgb2hex
 from condox.util import symage, colormap
 from .html2latex.rules import styles, cstyles
