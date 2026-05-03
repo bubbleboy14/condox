@@ -15,7 +15,7 @@ setup(
     ],
     zip_safe = False,
     install_requires = [
-        "fyg >= 0.1.7.2"
+        "fyg >= 0.1.7.10"
     ],
     entry_points = '''''',
     classifiers = [
