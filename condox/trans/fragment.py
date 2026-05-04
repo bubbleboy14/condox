@@ -88,7 +88,7 @@ class Fragment(object):
 	def _translate(self):
 		seg = self.style(self.sanitize(self.fragment))
 		if "handler" in self.rules:
-			return self.rules["handler"](seg)
+			return self.rules["handler"](seg, self.starter)
 		if "liner" in self.rules:
 			lines = seg.strip().split("</li>")
 			epart = lines.pop().replace("- ", "    - ")
