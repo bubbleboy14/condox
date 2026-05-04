@@ -62,6 +62,9 @@ class Fragment(object):
 			if key in colz:
 				val = colz[key]
 				self.log("style()", key, "restyling from:", tx)
+				if key == "background-color" and self.fragile_highlight(tx):
+					self.log("style()", key, "skipping fragile highlight:", tx)
+					continue
 				if key == "background-color" or key == "border-color":
 					hval = colormap(val)
 				else: # color (\textcolor[HTML])
@@ -72,6 +75,18 @@ class Fragment(object):
 				tx = self.cstyles[key]%(hval, tx)
 				self.log("to:", tx)
 		return tx
+
+	def fragile_highlight(self, tx):
+		fragile = [
+			"\\href{",
+			"\\begin{",
+			"\\end{",
+			"\\includegraphics",
+			"\\item",
+			"\\hfill\\break",
+			"\\\\"
+		]
+		return any(f in tx for f in fragile)
 
 	def sanitize(self, seg): # mainly strip for now
 		strip = self.rules.get("strip")
