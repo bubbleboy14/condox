@@ -62,9 +62,6 @@ class Fragment(object):
 			if key in colz:
 				val = colz[key]
 				self.log("style()", key, "restyling from:", tx)
-				if key == "background-color" and self.fragile_highlight(tx):
-					self.log("style()", key, "skipping fragile highlight:", tx)
-					continue
 				if key == "background-color" or key == "border-color":
 					hval = colormap(val)
 				else: # color (\textcolor[HTML])
@@ -72,9 +69,15 @@ class Fragment(object):
 						hval = rgb2hex(val)
 					else:
 						hval = val[-6:]
-				tx = self.cstyles[key]%(hval, tx)
+				if key == "background-color" and self.fragile_highlight(tx):
+					tx = self.box_highlight(hval, tx)
+				else:
+					tx = self.cstyles[key]%(hval, tx)
 				self.log("to:", tx)
 		return tx
+
+	def box_highlight(self, color, tx):
+		return "\\begin{tcolorbox}[breakable,boxrule=0pt,frame hidden,colback=%s,left=1pt,right=1pt,top=1pt,bottom=1pt,arc=0pt,outer arc=0pt]\n%s\n\\end{tcolorbox}"%(color, tx)
 
 	def fragile_highlight(self, tx):
 		fragile = [
