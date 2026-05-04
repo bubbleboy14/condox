@@ -199,7 +199,7 @@ flags = {
 		"tex": " %s "
 	},
 	"a": {
-		"tex": "\\href{%s}{%s}",
+		"tex": "\\href{%s}{\\textcolor{blue}{%s}}",
 		"href": True
 	},
 	"b": {
@@ -241,11 +241,12 @@ flags = {
 }
 
 tflags = {
-	"td": { "tex": " %s " }
+	"td": { "tex": " %s " },
+	"th": { "tex": " %s " }
 }
 
 tcstyles = {
-	"background-color": "\\cellcolor{%s}{%s}"
+	"background-color": "\\cellcolor{%s}%s"
 }
 
 for i in range(1, 7):

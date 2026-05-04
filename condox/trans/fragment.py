@@ -69,9 +69,27 @@ class Fragment(object):
 						hval = rgb2hex(val)
 					else:
 						hval = val[-6:]
-				tx = self.cstyles[key]%(hval, tx)
+				if key == "background-color" and self.fragile_highlight(tx):
+					tx = self.box_highlight(hval, tx)
+				else:
+					tx = self.cstyles[key]%(hval, tx)
 				self.log("to:", tx)
 		return tx
+
+	def box_highlight(self, color, tx):
+		return "\\begin{tcolorbox}[breakable,boxrule=0pt,frame hidden,colback=%s,left=1pt,right=1pt,top=1pt,bottom=1pt,arc=0pt,outer arc=0pt]\n%s\n\\end{tcolorbox}"%(color, tx)
+
+	def fragile_highlight(self, tx):
+		fragile = [
+			"\\href{",
+			"\\begin{",
+			"\\end{",
+			"\\includegraphics",
+			"\\item",
+			"\\hfill\\break",
+			"\\\\"
+		]
+		return any(f in tx for f in fragile)
 
 	def sanitize(self, seg): # mainly strip for now
 		strip = self.rules.get("strip")
@@ -88,7 +106,7 @@ class Fragment(object):
 	def _translate(self):
 		seg = self.style(self.sanitize(self.fragment))
 		if "handler" in self.rules:
-			return self.rules["handler"](seg)
+			return self.rules["handler"](seg, self.starter)
 		if "liner" in self.rules:
 			lines = seg.strip().split("</li>")
 			epart = lines.pop().replace("- ", "    - ")
